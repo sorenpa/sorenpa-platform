@@ -1,4 +1,4 @@
-import { useObservable } from "src/generic";
+import { useObservable } from "../../generic";
 import { AsyncStore } from "../infrastructure/async-store";
 import { AsyncStatus } from "../domain/async-status.type";
 
