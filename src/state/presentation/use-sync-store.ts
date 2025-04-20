@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-
+import { ISyncStore } from "../application/sync-store.interface";
 import { useObservable } from "src/generic";
-import { ISyncStore } from "src/state/application";
 
 export function useSyncStore<T>(service: ISyncStore<T>): T;
 export function useSyncStore<T, K extends keyof T>(

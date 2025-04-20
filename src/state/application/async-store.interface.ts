@@ -1,6 +1,7 @@
 import { Observable } from "rxjs";
-import { AsyncStatus, AsyncStoreError } from "src/state/domain";
-import { IBaseStore } from "src/state/application";
+import { IBaseStore } from "./base-store.interface";
+import { AsyncStatus } from "../domain/async-status.type";
+import { AsyncStoreError } from "../domain/async-store-error";
 
 export interface IAsyncStore<T> extends IBaseStore<T | null> {
   status$(): Observable<AsyncStatus>;

@@ -1,5 +1,6 @@
-import { AsyncStoreServiceConfig, QueryFn } from "src/state/domain";
-import { AsyncStore } from "src/state/infrastructure";
+import { AsyncStoreServiceConfig } from "../domain/async-store-service-config.type";
+import { QueryFn } from "../domain/query-function.type";
+import { AsyncStore } from "./async-store";
 
 export class AsyncStoreService<
   T,

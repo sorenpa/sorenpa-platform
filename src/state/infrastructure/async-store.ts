@@ -1,6 +1,7 @@
 import { BehaviorSubject, Observable } from "rxjs";
-import { AsyncStoreError, AsyncStatus } from "src/state/domain";
-import { IAsyncStore } from "src/state/application";
+import { IAsyncStore } from "../application/async-store.interface";
+import { AsyncStoreError } from "../domain/async-store-error";
+import { AsyncStatus } from "../domain/async-status.type";
 
 export class AsyncStore<T> implements IAsyncStore<T | null> {
   private readonly storeSubject = new BehaviorSubject<T | null>(null);

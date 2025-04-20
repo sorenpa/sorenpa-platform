@@ -1,4 +1,4 @@
-import { IDIContainer } from "src/di/application";
+import { IDIContainer } from "../application/di-container.interface";
 
 export class DIContainer<K extends string, M extends Record<K, unknown>>
   implements IDIContainer<K, M>

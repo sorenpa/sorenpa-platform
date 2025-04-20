@@ -1,2 +1,2 @@
-export * from "./application";
-export * from "./infrastructure";
+export * from "./application/di-container.interface";
+export * from "./infrastructure/di-container";
