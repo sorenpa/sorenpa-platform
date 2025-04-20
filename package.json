@@ -1,0 +1,50 @@
+{
+  "name": "@spapkg/platform",
+  "version": "1.0.0",
+  "description": "React architecture platform",
+  "keywords": [
+    "React",
+    "DI",
+    "rxjs",
+    "mvvm"
+  ],
+  "exports": {
+    "import": "./lib/esm/index.js",
+    "require": "./lib/cjs/index.js"
+  },
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/types/index.d.ts",
+  "files": [
+    "lib/**"
+  ],
+  "homepage": "https://github.com/sorenpa/spapkg-platform#readme",
+  "bugs": {
+    "url": "https://github.com/sorenpa/spapkg-platform/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sorenpa/spapkg-platform.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "license": "ISC",
+  "author": "spa",
+  "type": "commonjs",
+  "scripts": {
+    "build": "rimraf lib && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3"
+  }
+}
