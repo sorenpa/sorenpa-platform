@@ -7,7 +7,7 @@ login
 > npm login --registry=https://npm.pkg.github.com
 
 USR: sorenpa
-PWD: PAT
+PWD: PAT (https://github.com/settings/tokens)
 
 > npm publish
 
