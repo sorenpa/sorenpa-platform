@@ -13,4 +13,4 @@ PWD: PAT (https://github.com/settings/tokens)
 
 ### Install
 
-> npm install @yourname/platform --registry=https://npm.pkg.github.com
+> npm install @sorenpa/platform --registry=https://npm.pkg.github.com
