@@ -1,6 +1,6 @@
-import { useObservable } from "@generic/presentation";
-import { AsyncStore } from "@state/infrastructure";
-import { AsyncStatus } from "@state/domain";
+import { useObservable } from "src/generic/presentation";
+import { AsyncStore } from "src/state/infrastructure";
+import { AsyncStatus } from "src/state/domain";
 
 export function useAsyncStore<T>(store: AsyncStore<T>) {
   const data = useObservable(store.store$(), store.getSnapshot());

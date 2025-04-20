@@ -1,5 +1,5 @@
 import { BehaviorSubject, Observable } from "rxjs";
-import { ISyncStore } from "@state/application";
+import { ISyncStore } from "src/state/application";
 
 export class SyncStore<T extends { [key in keyof T]: unknown }>
   implements ISyncStore<T>

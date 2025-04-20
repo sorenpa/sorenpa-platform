@@ -12,13 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"],
-      "@di/*": ["src/di/*"],
-      "@generic/*": ["src/generic/*"],
-      "@state/*": ["src/state/*"]
-    }
+    "baseUrl": "."
   },
   "include": ["src"]
 }

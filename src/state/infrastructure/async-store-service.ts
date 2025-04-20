@@ -1,5 +1,5 @@
-import { AsyncStoreServiceConfig, QueryFn } from "@state/domain";
-import { AsyncStore } from "@state/infrastructure";
+import { AsyncStoreServiceConfig, QueryFn } from "src/state/domain";
+import { AsyncStore } from "src/state/infrastructure";
 
 export class AsyncStoreService<
   T,

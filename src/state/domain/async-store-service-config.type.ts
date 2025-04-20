@@ -1,4 +1,4 @@
-import { MutationFn, QueryFn } from "@state/domain";
+import { MutationFn, QueryFn } from "src/state/domain";
 
 export interface AsyncStoreServiceConfig<
   T,
