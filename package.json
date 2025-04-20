@@ -1,6 +1,6 @@
 {
   "name": "@sorenpa/platform",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "React architecture platform",
   "author": "spa",
   "license": "ISC",
@@ -10,12 +10,10 @@
     "rxjs",
     "mvvm"
   ],
+  "type": "module",
   "exports": {
-    ".": {
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js",
-      "types": "./lib/types/index.d.ts"
-    }
+    "import": "./lib/esm/index.js",
+    "require": "./lib/cjs/index.js"
   },
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
