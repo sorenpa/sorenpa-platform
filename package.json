@@ -1,7 +1,9 @@
 {
   "name": "@sorenpa/platform",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React architecture platform",
+  "author": "spa",
+  "license": "ISC",
   "keywords": [
     "React",
     "DI",
@@ -9,11 +11,8 @@
     "mvvm"
   ],
   "exports": {
-    ".": {
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js",
-      "types": "./lib/types/index.d.ts"
-    }
+    "import": "./lib/esm/index.js",
+    "require": "./lib/cjs/index.js"
   },
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -32,9 +31,6 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "license": "ISC",
-  "author": "spa",
-  "type": "commonjs",
   "scripts": {
     "build": "rimraf lib && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
     "test": "echo \"Error: no test specified\" && exit 1"
