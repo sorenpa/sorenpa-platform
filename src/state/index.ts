@@ -7,6 +7,7 @@ export * from "./application/async-store.interface";
 
 export * from "./infrastructure/sync-store";
 export * from "./infrastructure/async-store";
+export * from "./infrastructure/async-error-factory";
 
 export * from "./presentation/use-async-store";
 export * from "./presentation/use-sync-store";
