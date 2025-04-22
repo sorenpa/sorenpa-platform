@@ -3,7 +3,7 @@ import { AsyncStore } from "../infrastructure/async-store";
 import { AsyncStatus } from "../domain/async-status.type";
 import { AsyncActions } from "../domain/async-actions.type";
 
-export function useAsyncStore<T, A extends AsyncActions<T>>(
+export function useAsyncStore<T, A extends AsyncActions<T> = AsyncActions<T>>(
   store: AsyncStore<T, A>
 ) {
   const data = useObservable(store.state$(), store.getSnapshot());
