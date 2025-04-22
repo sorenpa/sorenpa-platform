@@ -1,11 +1,8 @@
 import { useObservable } from "../../generic";
 import { AsyncStore } from "../infrastructure/async-store";
 import { AsyncStatus } from "../domain/async-status.type";
-import { AsyncActions } from "../domain/async-actions.type";
 
-export function useAsyncStore<T, A extends AsyncActions<T> = AsyncActions<T>>(
-  store: AsyncStore<T, A>
-) {
+export function useAsyncStore<T>(store: AsyncStore<T>) {
   const data = useObservable(store.state$(), store.getSnapshot());
   const loading = useObservable(store.loading$(), false);
   const error = useObservable(store.error$(), null);

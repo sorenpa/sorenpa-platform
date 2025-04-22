@@ -2,20 +2,21 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { IAsyncStore } from "../application/async-store.interface";
 import { AsyncStatus } from "../domain/async-status.type";
 import { AsyncStoreError } from "../domain/async-store-error";
-import { AsyncActions } from "../domain/async-actions.type";
-export class AsyncStore<T, A extends AsyncActions<T>>
-  implements IAsyncStore<Partial<T>>
+
+export abstract class AsyncStore<T, E extends Error = AsyncStoreError>
+  implements IAsyncStore<Partial<T>, E>
 {
   protected readonly stateSubject = new BehaviorSubject<Partial<T>>({});
   protected readonly loadingSubject = new BehaviorSubject<boolean>(false);
-  protected readonly errorSubject = new BehaviorSubject<AsyncStoreError | null>(
-    null
-  );
+  protected readonly errorSubject = new BehaviorSubject<E | null>(null);
   protected readonly statusSubject = new BehaviorSubject<AsyncStatus>(
     AsyncStatus.IDLE
   );
 
-  constructor(private readonly actions: A) {}
+  constructor(
+    private readonly errorFactory: (e: unknown) => E = (e) =>
+      new AsyncStoreError(e, "AsyncStore") as unknown as E
+  ) {}
 
   public state$(): Observable<Partial<T> | null> {
     return this.stateSubject.asObservable();
@@ -25,7 +26,7 @@ export class AsyncStore<T, A extends AsyncActions<T>>
     return this.loadingSubject.asObservable();
   }
 
-  public error$(): Observable<AsyncStoreError | null> {
+  public error$(): Observable<E | null> {
     return this.errorSubject.asObservable();
   }
 
@@ -35,22 +36,6 @@ export class AsyncStore<T, A extends AsyncActions<T>>
 
   public getSnapshot(): Partial<T> {
     return this.stateSubject.getValue();
-  }
-
-  public async run<K extends keyof A>(
-    key: K,
-    ...args: Parameters<A[K]>
-  ): Promise<void> {
-    const fn = this.actions[key];
-    if (!fn) throw new Error(`Action "${String(key)}" not found`);
-
-    return this.runWithStatus(async () => {
-      const patch = await fn(...args);
-      if (patch) {
-        const updated = { ...this.stateSubject.getValue(), ...patch };
-        this.stateSubject.next(updated);
-      }
-    });
   }
 
   protected async runWithStatus<R>(
@@ -63,7 +48,7 @@ export class AsyncStore<T, A extends AsyncActions<T>>
       onSuccess?.(result);
       this.statusSubject.next(AsyncStatus.SUCCESS);
     } catch (e) {
-      this.errorSubject.next(new AsyncStoreError(e));
+      this.errorSubject.next(this.errorFactory(e));
     } finally {
       this.loadingSubject.next(false);
     }
