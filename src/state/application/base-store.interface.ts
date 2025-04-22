@@ -1,6 +1,6 @@
 import { Observable } from "rxjs";
 
 export interface IBaseStore<T> {
-  store$(): Observable<T>;
+  state$(): Observable<T>;
   getSnapshot(): T;
 }

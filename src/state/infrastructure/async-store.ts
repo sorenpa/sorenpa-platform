@@ -1,67 +1,71 @@
 import { BehaviorSubject, Observable } from "rxjs";
 import { IAsyncStore } from "../application/async-store.interface";
-import { AsyncStoreError } from "../domain/async-store-error";
 import { AsyncStatus } from "../domain/async-status.type";
-
-export class AsyncStore<T> implements IAsyncStore<T | null> {
-  private readonly storeSubject = new BehaviorSubject<T | null>(null);
-  private readonly loadingSubject = new BehaviorSubject<boolean>(false);
-  private readonly errorSubject = new BehaviorSubject<AsyncStoreError | null>(
+import { AsyncStoreError } from "../domain/async-store-error";
+import { AsyncActions } from "../domain/async-actions.type";
+export class AsyncStore<T, A extends AsyncActions<T>>
+  implements IAsyncStore<Partial<T>>
+{
+  protected readonly stateSubject = new BehaviorSubject<Partial<T>>({});
+  protected readonly loadingSubject = new BehaviorSubject<boolean>(false);
+  protected readonly errorSubject = new BehaviorSubject<AsyncStoreError | null>(
     null
   );
-  private readonly statusSubject = new BehaviorSubject<AsyncStatus>(
+  protected readonly statusSubject = new BehaviorSubject<AsyncStatus>(
     AsyncStatus.IDLE
   );
 
-  store$(): Observable<T | null> {
-    return this.storeSubject.asObservable();
+  constructor(private readonly actions: A) {}
+
+  public state$(): Observable<Partial<T> | null> {
+    return this.stateSubject.asObservable();
   }
 
-  loading$(): Observable<boolean> {
+  public loading$(): Observable<boolean> {
     return this.loadingSubject.asObservable();
   }
 
-  error$(): Observable<AsyncStoreError | null> {
+  public error$(): Observable<AsyncStoreError | null> {
     return this.errorSubject.asObservable();
   }
 
-  status$(): Observable<AsyncStatus> {
+  public status$(): Observable<AsyncStatus> {
     return this.statusSubject.asObservable();
   }
 
-  getSnapshot(): T | null {
-    return this.storeSubject.getValue();
+  public getSnapshot(): Partial<T> {
+    return this.stateSubject.getValue();
   }
 
-  protected setStoreState(newState: T) {
-    this.storeSubject.next(newState);
-  }
+  public async run<K extends keyof A>(
+    key: K,
+    ...args: Parameters<A[K]>
+  ): Promise<void> {
+    const fn = this.actions[key];
+    if (!fn) throw new Error(`Action "${String(key)}" not found`);
 
-  protected setError(error: AsyncStoreError) {
-    this.errorSubject.next(error);
-  }
-
-  protected setStatus(status: AsyncStatus) {
-    this.statusSubject.next(status);
-  }
-
-  protected setLoading(isLoading: boolean) {
-    this.loadingSubject.next(isLoading);
+    return this.runWithStatus(async () => {
+      const patch = await fn(...args);
+      if (patch) {
+        const updated = { ...this.stateSubject.getValue(), ...patch };
+        this.stateSubject.next(updated);
+      }
+    });
   }
 
   protected async runWithStatus<R>(
     fn: () => Promise<R>,
     onSuccess?: (result: R) => void
   ): Promise<void> {
-    this.setLoading(true);
+    this.loadingSubject.next(true);
     try {
       const result = await fn();
       onSuccess?.(result);
-      this.setStatus(AsyncStatus.SUCCESS);
+      this.statusSubject.next(AsyncStatus.SUCCESS);
     } catch (e) {
-      this.setError(new AsyncStoreError(e));
+      this.errorSubject.next(new AsyncStoreError(e));
     } finally {
-      this.setLoading(false);
+      this.loadingSubject.next(false);
     }
   }
 }

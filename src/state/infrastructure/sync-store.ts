@@ -4,30 +4,30 @@ import { ISyncStore } from "../application/sync-store.interface";
 export class SyncStore<T extends { [key in keyof T]: unknown }>
   implements ISyncStore<T>
 {
-  private readonly storeSubject: BehaviorSubject<T>;
-  private readonly initialState: T;
+  protected readonly stateSubject: BehaviorSubject<T>;
+  protected readonly initialState: T;
 
   constructor(initialState: T) {
     this.initialState = initialState;
-    this.storeSubject = new BehaviorSubject(initialState);
+    this.stateSubject = new BehaviorSubject(initialState);
   }
 
-  store$(): Observable<T> {
-    return this.storeSubject.asObservable();
+  state$(): Observable<T> {
+    return this.stateSubject.asObservable();
   }
 
   getSnapshot(): T {
-    return this.storeSubject.getValue();
+    return this.stateSubject.getValue();
   }
 
   update(patch: Partial<T>): void {
-    this.storeSubject.next({
-      ...this.storeSubject.getValue(),
+    this.stateSubject.next({
+      ...this.stateSubject.getValue(),
       ...patch,
     });
   }
 
   reset(): void {
-    this.storeSubject.next(this.initialState);
+    this.stateSubject.next(this.initialState);
   }
 }
