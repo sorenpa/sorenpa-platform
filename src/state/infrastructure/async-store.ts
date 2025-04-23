@@ -41,12 +41,13 @@ export abstract class AsyncStore<T, E extends Error = AsyncStoreError>
   protected async runWithStatus<R>(
     fn: () => Promise<R>,
     onSuccess?: (result: R) => void
-  ): Promise<void> {
+  ): Promise<R | void> {
     this.loadingSubject.next(true);
     try {
       const result = await fn();
       onSuccess?.(result);
       this.statusSubject.next(AsyncStatus.SUCCESS);
+      return result; // Return the result to keep type inference
     } catch (e) {
       this.errorSubject.next(this.errorFactory(e));
     } finally {
