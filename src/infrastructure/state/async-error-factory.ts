@@ -1,4 +1,4 @@
-import { AsyncStoreError } from "../domain/async-store-error";
+import { AsyncStoreError } from "../../domain/state/async-store-error";
 
 export function asyncErrorFactory(
   context: string

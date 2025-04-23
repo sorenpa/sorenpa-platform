@@ -1,5 +1,5 @@
-import { IDIContainer } from "../application/di-container.interface";
-import { DIDependencyMap } from "../domain/di-dependency-map.type";
+import { DIDependencyMap } from "../domain/di/di-dependency-map.type";
+import { IDIContainer } from "../application/di/di-container.interface";
 
 type Factory<T> = () => T;
 

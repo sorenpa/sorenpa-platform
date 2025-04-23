@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable } from "rxjs";
-import { IAsyncStore } from "../application/async-store.interface";
-import { AsyncStatus } from "../domain/async-status.type";
-import { AsyncStoreError } from "../domain/async-store-error";
+import { IAsyncStore } from "../../application";
+import { AsyncStatus } from "../../domain/state/async-status.type";
+import { AsyncStoreError } from "../../domain/state/async-store-error";
 
 export abstract class AsyncStore<T, E extends Error = AsyncStoreError>
   implements IAsyncStore<Partial<T>, E>

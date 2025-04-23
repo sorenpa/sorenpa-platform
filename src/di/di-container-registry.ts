@@ -1,6 +1,4 @@
-import { DIContainerKey } from "../domain/di-container-key.type";
-import { DIContainerMap } from "../domain/di-container-map.type";
-import { DIDependencyMap } from "../domain/di-dependency-map.type";
+import { DIContainerKey, DIDependencyMap, DIContainerMap } from "../domain";
 import { DIContainer } from "./di-container";
 
 const containers: Partial<DIContainerMap> = {};
