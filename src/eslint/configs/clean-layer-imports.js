@@ -1,4 +1,4 @@
-import cleanLayerImports from "../rules/clean-layer-imports";
+import cleanLayerImports from "../rules/clean-layer-imports.js";
 
 export default [
   {
@@ -11,7 +11,7 @@ export default [
       },
     },
     rules: {
-      "clean-layer-imports": "error",
+      "clean-arch/layer-imports": "error",
     },
   },
 ];
