@@ -1,6 +1,6 @@
 {
   "name": "@sorenpa/platform",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "React architecture platform",
   "author": "spa",
   "license": "ISC",
@@ -11,41 +11,14 @@
     "mvvm"
   ],
   "type": "module",
-  "exports": {
-    "./infrastructure": {
-      "import": "./lib/esm/infrastructure/index.js",
-      "require": "./lib/cjs/infrastructure/index.js",
-      "types": "./lib/types/infrastructure/index.d.ts"
-    },
-    "./presentation": {
-      "import": "./lib/esm/presentation/index.js",
-      "require": "./lib/cjs/presentation/index.js",
-      "types": "./lib/types/presentation/index.d.ts"
-    },
-    "./application": {
-      "import": "./lib/esm/application/index.js",
-      "require": "./lib/cjs/application/index.js",
-      "types": "./lib/types/application/index.d.ts"
-    },
-    "./domain": {
-      "import": "./lib/esm/domain/index.js",
-      "require": "./lib/cjs/domain/index.js",
-      "types": "./lib/types/domain/index.d.ts"
-    },
-    "./di": {
-      "import": "./lib/esm/di/index.js",
-      "require": "./lib/cjs/di/index.js",
-      "types": "./lib/types/di/index.d.ts"
-    },
-    "./eslint/rules/clean-layer-imports": {
-      "import": "./lib/esm/eslint/rules/clean-layer-imports.js",
-      "require": "./lib/cjs/eslint/rules/clean-layer-imports.js"
-    },
-    "./eslint/configs/clean-layer-imports": {
-      "import": "./lib/esm/eslint/configs/clean-layer-imports.js",
-      "require": "./lib/cjs/eslint/configs/clean-layer-imports.js"
-    }
+  ".": {
+    "import": "./lib/esm/index.js",
+    "require": "./lib/cjs/index.js",
+    "types": "./lib/types/index.d.ts"
   },
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/types/index.d.ts",
   "files": [
     "lib/**"
   ],
@@ -61,7 +34,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
-    "build": "rimraf lib && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
+    "build": "rimraf lib && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && tsc -p tsconfig.eslint.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
