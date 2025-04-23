@@ -38,20 +38,17 @@ export abstract class AsyncStore<T, E extends Error = AsyncStoreError>
     return this.stateSubject.getValue();
   }
 
-  protected async runWithStatus<R>(
-    fn: () => Promise<R>,
-    onSuccess?: (result: R) => void
-  ): Promise<R | void> {
+  protected async runWithStatus<R>(fn: () => Promise<R>): Promise<void> {
     this.loadingSubject.next(true);
-    try {
-      const result = await fn();
-      onSuccess?.(result);
-      this.statusSubject.next(AsyncStatus.SUCCESS);
-      return result; // Return the result to keep type inference
-    } catch (e) {
-      this.errorSubject.next(this.errorFactory(e));
-    } finally {
-      this.loadingSubject.next(false);
-    }
+    return await fn()
+      .then(() => {
+        this.statusSubject.next(AsyncStatus.SUCCESS);
+      })
+      .catch((e) => {
+        const err = this.errorFactory(e);
+        this.errorSubject.next(err);
+        throw err;
+      })
+      .finally(() => this.loadingSubject.next(false));
   }
 }
