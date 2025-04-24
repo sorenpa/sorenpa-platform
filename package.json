@@ -1,6 +1,6 @@
 {
   "name": "@sorenpa/platform",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "React architecture platform",
   "author": "spa",
   "license": "ISC",
@@ -45,13 +45,13 @@
       "require": "./lib/cjs/di/index.js",
       "types": "./lib/types/di/index.d.ts"
     },
-    "./eslint/rules/clean-layer-imports.rule": {
-      "import": "./lib/eslint/rules/clean-layer-imports.rule.js",
-      "require": "./lib/eslint/rules/clean-layer-imports.rule.js"
+    "./eslint/rules/clean-layer-imports": {
+      "import": "./lib/eslint/rules/clean-layer-imports.js",
+      "require": "./lib/eslint/rules/clean-layer-imports.js"
     },
-    "./eslint/templates/clean-layer-imports.template": {
-      "import": "./lib/eslint/templates/clean-layer-imports.template.js",
-      "require": "./lib/eslint/templates/clean-layer-imports.template.js"
+    "./eslint/configs/clean-layer-imports": {
+      "import": "./lib/eslint/configs/clean-layer-imports.js",
+      "require": "./lib/eslint/configs/clean-layer-imports.js"
     }
   },
   "typesVersions": {
