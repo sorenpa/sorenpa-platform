@@ -1,6 +1,6 @@
 {
   "name": "@sorenpa/platform",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "React architecture platform",
   "author": "spa",
   "license": "ISC",
@@ -11,24 +11,24 @@
     "mvvm"
   ],
   "type": "module",
-  ".": {
-    "import": "./lib/esm/index.js",
-    "require": "./lib/cjs/index.js",
-    "types": "./lib/types/index.d.ts"
-  },
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
   "types": "./lib/types/index.d.ts",
   "exports": {
-    "./infrastructure": {
-      "import": "./lib/esm/infrastructure/index.js",
-      "require": "./lib/cjs/infrastructure/index.js",
-      "types": "./lib/types/infrastructure/index.d.ts"
+    ".": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js",
+      "types": "./lib/types/index.d.ts"
     },
     "./presentation": {
       "import": "./lib/esm/presentation/index.js",
       "require": "./lib/cjs/presentation/index.js",
       "types": "./lib/types/presentation/index.d.ts"
+    },
+    "./infrastructure": {
+      "import": "./lib/esm/infrastructure/index.js",
+      "require": "./lib/cjs/infrastructure/index.js",
+      "types": "./lib/types/infrastructure/index.d.ts"
     },
     "./application": {
       "import": "./lib/esm/application/index.js",
@@ -52,6 +52,16 @@
     "./eslint/templates/clean-layer-imports.template": {
       "import": "./lib/eslint/templates/clean-layer-imports.template.js",
       "require": "./lib/eslint/templates/clean-layer-imports.template.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "lib/types/*/index.d.ts"
+      ],
+      ".": [
+        "lib/types/index.d.ts"
+      ]
     }
   },
   "files": [
