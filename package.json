@@ -1,6 +1,6 @@
 {
   "name": "@sorenpa/platform",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "React architecture platform",
   "author": "spa",
   "license": "ISC",
@@ -19,6 +19,41 @@
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
   "types": "./lib/types/index.d.ts",
+  "exports": {
+    "./infrastructure": {
+      "import": "./lib/esm/infrastructure/index.js",
+      "require": "./lib/cjs/infrastructure/index.js",
+      "types": "./lib/types/infrastructure/index.d.ts"
+    },
+    "./presentation": {
+      "import": "./lib/esm/presentation/index.js",
+      "require": "./lib/cjs/presentation/index.js",
+      "types": "./lib/types/presentation/index.d.ts"
+    },
+    "./application": {
+      "import": "./lib/esm/application/index.js",
+      "require": "./lib/cjs/application/index.js",
+      "types": "./lib/types/application/index.d.ts"
+    },
+    "./domain": {
+      "import": "./lib/esm/domain/index.js",
+      "require": "./lib/cjs/domain/index.js",
+      "types": "./lib/types/domain/index.d.ts"
+    },
+    "./di": {
+      "import": "./lib/esm/di/index.js",
+      "require": "./lib/cjs/di/index.js",
+      "types": "./lib/types/di/index.d.ts"
+    },
+    "./eslint/rules/clean-layer-imports.rule": {
+      "import": "./lib/eslint/rules/clean-layer-imports.rule.js",
+      "require": "./lib/eslint/rules/clean-layer-imports.rule.js"
+    },
+    "./eslint/templates/clean-layer-imports.template": {
+      "import": "./lib/eslint/templates/clean-layer-imports.template.js",
+      "require": "./lib/eslint/templates/clean-layer-imports.template.js"
+    }
+  },
   "files": [
     "lib/**"
   ],
