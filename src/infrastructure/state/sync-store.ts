@@ -6,14 +6,12 @@ export class SyncStore<T extends { [key in keyof T]: unknown }>
 {
   protected readonly stateSubject: BehaviorSubject<T>;
   protected readonly initialState: T;
+  public readonly state$: Observable<T>;
 
   constructor(initialState: T) {
     this.initialState = initialState;
     this.stateSubject = new BehaviorSubject(initialState);
-  }
-
-  state$(): Observable<T> {
-    return this.stateSubject.asObservable();
+    this.state$ = this.stateSubject.asObservable();
   }
 
   getSnapshot(): T {

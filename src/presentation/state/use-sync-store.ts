@@ -11,7 +11,7 @@ export function useSyncStore<T, K extends keyof T>(
   service: ISyncStore<T>,
   keys?: K[]
 ): T | Pick<T, K> {
-  const fullState = useObservable(service.state$(), service.getSnapshot());
+  const fullState = useObservable(service.state$, service.getSnapshot());
 
   const selectedState = useMemo(() => {
     if (!keys || keys.length === 0) return fullState;

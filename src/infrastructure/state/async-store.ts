@@ -13,25 +13,19 @@ export abstract class AsyncStore<T, E extends Error = AsyncStoreError>
     AsyncStatus.IDLE
   );
 
+  public readonly state$: Observable<Partial<T> | null>;
+  public readonly loading$: Observable<boolean>;
+  public readonly error$: Observable<E | null>;
+  public readonly status$: Observable<AsyncStatus>;
+
   constructor(
     private readonly errorFactory: (e: unknown) => E = (e) =>
       new AsyncStoreError(e, "AsyncStore") as unknown as E
-  ) {}
-
-  public state$(): Observable<Partial<T> | null> {
-    return this.stateSubject.asObservable();
-  }
-
-  public loading$(): Observable<boolean> {
-    return this.loadingSubject.asObservable();
-  }
-
-  public error$(): Observable<E | null> {
-    return this.errorSubject.asObservable();
-  }
-
-  public status$(): Observable<AsyncStatus> {
-    return this.statusSubject.asObservable();
+  ) {
+    this.state$ = this.stateSubject.asObservable();
+    this.loading$ = this.loadingSubject.asObservable();
+    this.error$ = this.errorSubject.asObservable();
+    this.status$ = this.statusSubject.asObservable();
   }
 
   public getSnapshot(): Partial<T> {
