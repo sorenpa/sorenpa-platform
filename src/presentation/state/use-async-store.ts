@@ -1,6 +1,7 @@
 import { useObservable } from "../../presentation";
 import { IAsyncStore } from "../../application";
 import { AsyncStatus } from "../../domain";
+import { useMemo } from "react";
 
 export function useAsyncStore<T>(store: IAsyncStore<T>) {
   const data = useObservable(store.state$(), store.getSnapshot());
@@ -8,5 +9,10 @@ export function useAsyncStore<T>(store: IAsyncStore<T>) {
   const error = useObservable(store.error$(), null);
   const status = useObservable(store.status$(), AsyncStatus.IDLE);
 
-  return { data, loading, error, status };
+  const asyncState = useMemo(
+    () => ({ data, loading, error, status }),
+    [data, loading, error, status]
+  );
+
+  return asyncState;
 }

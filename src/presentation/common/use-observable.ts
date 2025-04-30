@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Observable } from "rxjs";
+import { createSyncObservable } from "./create-sync-observable";
 
 export function useObservable<T>(observable$: Observable<T>, initial: T): T {
-  const [value, setValue] = useState(initial);
+  const syncObservable$ = createSyncObservable(observable$, initial);
 
-  useEffect(() => {
-    const sub = observable$.subscribe(setValue);
-    return () => sub.unsubscribe();
-  }, [observable$]);
-
-  return value;
+  return useSyncExternalStore(
+    (cb) => {
+      const sub = syncObservable$.subscribe(() => cb());
+      return () => sub.unsubscribe();
+    },
+    () => syncObservable$.getSnapshot(),
+    () => syncObservable$.getSnapshot()
+  );
 }
