@@ -1,9 +1,12 @@
-import { useSyncExternalStore } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { Observable } from "rxjs";
 import { createSyncObservable } from "./create-sync-observable";
 
 export function useObservable<T>(observable$: Observable<T>, initial: T): T {
-  const syncObservable$ = createSyncObservable(observable$, initial);
+  const syncObservable$ = useMemo(
+    () => createSyncObservable(observable$, initial),
+    [observable$]
+  );
 
   return useSyncExternalStore(
     (cb) => {
