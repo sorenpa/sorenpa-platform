@@ -1,9 +1,10 @@
 import { BehaviorSubject, Observable } from "rxjs";
-import { IAsyncStore } from "../../application";
+import { DIService, IAsyncStore } from "../../application";
 import { AsyncStatus } from "../../domain/state/async-status.type";
 import { AsyncStoreError } from "../../domain/state/async-store-error";
 
 export abstract class AsyncStore<T, E extends Error = AsyncStoreError>
+  extends DIService
   implements IAsyncStore<Partial<T>, E>
 {
   protected readonly stateSubject = new BehaviorSubject<Partial<T>>({});
@@ -22,6 +23,9 @@ export abstract class AsyncStore<T, E extends Error = AsyncStoreError>
     private readonly errorFactory: (e: unknown) => E = (e) =>
       new AsyncStoreError(e, "AsyncStore") as unknown as E
   ) {
+    super();
+    this._meta.name = this.constructor.name;
+    this._meta.type = "async-store";
     this.state$ = this.stateSubject.asObservable();
     this.loading$ = this.loadingSubject.asObservable();
     this.error$ = this.errorSubject.asObservable();

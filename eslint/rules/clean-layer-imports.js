@@ -3,14 +3,14 @@ import { fileURLToPath } from "url";
 import chalk from "chalk";
 
 const LAYER_CONFIG = {
-  di: {
-    dependencies: ["presentation", "application", "domain", "infrastructure"],
-  },
+  // di: {
+  //   dependencies: ["presentation", "application", "domain", "infrastructure"],
+  // },
   presentation: {
-    dependencies: ["application", "domain", "di"],
+    dependencies: ["application", "domain"],
   },
   infrastructure: {
-    dependencies: ["application", "domain", "di"],
+    dependencies: ["application", "domain"],
   },
   application: {
     dependencies: ["domain"],

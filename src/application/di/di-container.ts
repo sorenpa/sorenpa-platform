@@ -1,5 +1,5 @@
-import { DIDependencyMap } from "../domain/di/di-dependency-map.type";
-import { IDIContainer } from "../application/di/di-container.interface";
+import { DIDependencyMap } from "./di-dependency-map";
+import { IDIContainer } from "./di-container.interface";
 
 type Factory<T> = () => T;
 
@@ -39,5 +39,16 @@ export class DIContainer<M extends DIDependencyMap> implements IDIContainer<M> {
     this.serviceInstances[key] = instance;
 
     return instance;
+  }
+
+  replace<K extends keyof M>(key: K, service: M[K] | Factory<M[K]>): void {
+    delete this.serviceInstances[key];
+    delete this.serviceFactories[key];
+
+    if (typeof service === "function") {
+      this.serviceFactories[key] = service as Factory<M[K]>;
+    } else {
+      this.serviceInstances[key] = service;
+    }
   }
 }

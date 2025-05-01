@@ -1,4 +1,4 @@
-import { DIDependencyMap } from "../../domain/di/di-dependency-map.type";
+import { DIDependencyMap } from "./di-dependency-map";
 
 export interface IDIContainer<M extends DIDependencyMap> {
   register<K extends keyof M>(key: K, input: () => M[K] | M[K]): void;
