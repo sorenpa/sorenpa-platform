@@ -21,6 +21,10 @@ export function getDiContainer<DM extends DIDependencyMap>(
   return container as DIContainer<DM>;
 }
 
+// type EnforceDIService<T> = {
+//   [K in keyof T]: T[K] extends IDIService ? T[K] : never;
+// };
+
 export function createDIContainer<DM extends DIDependencyMap>(
   key: DIContainerKey,
   registerFn?: (container: DIContainer<DM>) => void
