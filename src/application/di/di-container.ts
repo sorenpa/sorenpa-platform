@@ -1,5 +1,6 @@
 import { DIDependencyMap } from "./di-dependency-map";
 import { IDIContainer } from "./di-container.interface";
+import { IDIService } from "./di-service.interface";
 
 type Factory<T> = () => T;
 
@@ -7,9 +8,12 @@ export class DIContainer<M extends DIDependencyMap> implements IDIContainer<M> {
   private serviceFactories: Partial<{ [K in keyof M]: Factory<M[K]> }> = {};
   private serviceInstances: Partial<M> = {};
 
-  register<K extends keyof M>(key: K, service: M[K]): void;
-  register<K extends keyof M>(key: K, factory: Factory<M[K]>): void;
-  register<K extends keyof M>(key: K, input: Factory<M[K]> | M[K]): void {
+  register<K extends string, T extends IDIService>(key: K, service: T): void;
+  register<K extends string, T extends IDIService>(
+    key: K,
+    factory: Factory<T>
+  ): void;
+  register<K extends string>(key: K, input: Factory<M[K]> | M[K]): void {
     if (this.serviceFactories[key] || this.serviceInstances[key]) {
       throw new Error(
         `Service with key "${String(key)}" is already registered.`
