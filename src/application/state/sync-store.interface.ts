@@ -1,6 +1,6 @@
-import { IBaseStore } from "./base-store.interface";
+import { IStore } from "./base-store.interface";
 
-export interface ISyncStore<T> extends IBaseStore<T> {
+export interface ISyncStore<T> extends IStore<T> {
   update(patch: Partial<T>): void;
   reset(): void;
 }

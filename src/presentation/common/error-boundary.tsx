@@ -1,5 +1,5 @@
 import React from "react";
-import { ErrorRegion } from "src/domain/common/error-region";
+import { ErrorRegion } from "../../domain";
 
 type Props = {
   children: React.ReactNode;

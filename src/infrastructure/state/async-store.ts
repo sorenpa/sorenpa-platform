@@ -1,23 +1,15 @@
 import { BehaviorSubject, Observable } from "rxjs";
+import { AsyncStoreError, AsyncStatus, Async } from "../../domain";
 import { DIService, IAsyncStore } from "../../application";
-import { AsyncStatus } from "../../domain/state/async-status.type";
-import { AsyncStoreError } from "../../domain/state/async-store-error";
 
 export abstract class AsyncStore<T, E extends Error = AsyncStoreError>
   extends DIService
-  implements IAsyncStore<Partial<T>, E>
+  implements IAsyncStore<Partial<T>>
 {
-  protected readonly stateSubject = new BehaviorSubject<Partial<T>>({});
-  protected readonly loadingSubject = new BehaviorSubject<boolean>(false);
-  protected readonly errorSubject = new BehaviorSubject<E | null>(null);
-  protected readonly statusSubject = new BehaviorSubject<AsyncStatus>(
-    AsyncStatus.IDLE
-  );
-
-  public readonly state$: Observable<Partial<T> | null>;
-  public readonly loading$: Observable<boolean>;
-  public readonly error$: Observable<E | null>;
-  public readonly status$: Observable<AsyncStatus>;
+  protected readonly stateSubject = new BehaviorSubject<Async<Partial<T>>>({
+    status: AsyncStatus.EMPTY,
+  });
+  public readonly state$: Observable<Async<Partial<T>>>;
 
   constructor(
     private readonly errorFactory: (e: unknown) => E = (e) =>
@@ -27,26 +19,22 @@ export abstract class AsyncStore<T, E extends Error = AsyncStoreError>
     this._meta.name = this.constructor.name;
     this._meta.type = "async-store";
     this.state$ = this.stateSubject.asObservable();
-    this.loading$ = this.loadingSubject.asObservable();
-    this.error$ = this.errorSubject.asObservable();
-    this.status$ = this.statusSubject.asObservable();
   }
 
-  public getSnapshot(): Partial<T> {
+  public getSnapshot(): Async<Partial<T>> {
     return this.stateSubject.getValue();
   }
 
-  protected async runWithStatus<R>(fn: () => Promise<R>): Promise<void> {
-    this.loadingSubject.next(true);
+  protected async runWithStatus(fn: () => Promise<Partial<T>>): Promise<void> {
+    this.stateSubject.next({ status: AsyncStatus.LOADING });
     return await fn()
-      .then(() => {
-        this.statusSubject.next(AsyncStatus.SUCCESS);
+      .then((data) => {
+        this.stateSubject.next({ status: AsyncStatus.DATA, data });
       })
       .catch((e) => {
-        const err = this.errorFactory(e);
-        this.errorSubject.next(err);
-        throw err;
-      })
-      .finally(() => this.loadingSubject.next(false));
+        const error = this.errorFactory(e);
+        this.stateSubject.next({ status: AsyncStatus.ERROR, error });
+        throw error;
+      });
   }
 }
