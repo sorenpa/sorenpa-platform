@@ -1,14 +1,14 @@
 import { BehaviorSubject, Observable } from "rxjs";
-import { AsyncStoreError, AsyncStatus, Async } from "../../domain";
-import { DIService, IAsyncStore } from "../../application";
+import { AsyncStoreError, Async } from "../../domain";
+import { AsyncValue, DIService, IAsyncStore } from "../../application";
 
 export abstract class AsyncStore<T, E extends Error = AsyncStoreError>
   extends DIService
   implements IAsyncStore<Partial<T>>
 {
-  protected readonly stateSubject = new BehaviorSubject<Async<Partial<T>>>({
-    status: AsyncStatus.EMPTY,
-  });
+  protected readonly stateSubject = new BehaviorSubject<Async<Partial<T>>>(
+    AsyncValue.EMPTY()
+  );
   public readonly state$: Observable<Async<Partial<T>>>;
 
   constructor(
@@ -26,14 +26,14 @@ export abstract class AsyncStore<T, E extends Error = AsyncStoreError>
   }
 
   protected async runWithStatus(fn: () => Promise<Partial<T>>): Promise<void> {
-    this.stateSubject.next({ status: AsyncStatus.LOADING });
+    this.stateSubject.next(AsyncValue.LOADING());
     return await fn()
       .then((data) => {
-        this.stateSubject.next({ status: AsyncStatus.DATA, data });
+        this.stateSubject.next(AsyncValue.DATA(data));
       })
       .catch((e) => {
         const error = this.errorFactory(e);
-        this.stateSubject.next({ status: AsyncStatus.ERROR, error });
+        this.stateSubject.next(AsyncValue.ERROR(e));
         throw error;
       });
   }

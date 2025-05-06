@@ -8,7 +8,23 @@ import {
 } from "src/domain";
 
 export class AsyncValue {
-  static isSuccess<T>(value: Async<T>): value is AsyncData<T> {
+  static EMPTY(): AsyncEmpty {
+    return { status: AsyncStatus.EMPTY };
+  }
+
+  static LOADING(): AsyncLoading {
+    return { status: AsyncStatus.LOADING };
+  }
+
+  static ERROR(error: Error): AsyncError {
+    return { status: AsyncStatus.ERROR, error };
+  }
+
+  static DATA<T>(data: T): AsyncData<T> {
+    return { status: AsyncStatus.DATA, data };
+  }
+
+  static hasData<T>(value: Async<T>): value is AsyncData<T> {
     return value.status === AsyncStatus.DATA;
   }
 
@@ -30,15 +46,15 @@ export class AsyncValue {
   }
 
   static getMaybe<T>(value: Async<T>): T | undefined {
-    return AsyncValue.isSuccess(value) ? value.data : undefined;
+    return AsyncValue.hasData(value) ? value.data : undefined;
   }
 
   static get<T>(value: Async<T>): T {
-    if (AsyncValue.isSuccess(value)) return value.data;
+    if (AsyncValue.hasData(value)) return value.data;
     throw new Error(`Expected SUCCESS but got ${value.status}`);
   }
 
   static getOr<T>(value: Async<T>, fallback: () => T): T {
-    return AsyncValue.isSuccess(value) ? value.data : fallback();
+    return AsyncValue.hasData(value) ? value.data : fallback();
   }
 }

@@ -2,6 +2,14 @@ import { Maybe, MaybeNone, MaybeSome } from "src/domain/common/maybe";
 import { MaybeStatus } from "src/domain/common/maybe-status";
 
 export class MaybeValue {
+  static NONE(): MaybeNone {
+    return { status: MaybeStatus.NONE };
+  }
+
+  static SOME<T>(value: T): MaybeSome<T> {
+    return { status: MaybeStatus.SOME, value };
+  }
+
   static isSome<T>(value: Maybe<T>): value is MaybeSome<T> {
     return value.status === MaybeStatus.SOME;
   }
